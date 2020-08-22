@@ -1,7 +1,7 @@
 # sim7000gpstracker
 This is simple GPS vehicle tracker base on SIMCOM SIM7000E/G/A module.  Works for GSM/LTE-M networks around the globe
 
-DIY cheap GPS motorbike/car tracker based on  ATMEGA 328P (arduino uno chip) and SIM7000E/SIM7000G/SIM7000A module from China (includes GPS and GNSS function). The total cost is below 40USD ( as in 2020 ) and positioning accuracy is ~1-20 meters ( tested in Europe location). The BK-7000 dev board can be bought here : http://www.and-global.com/index.php/product/SIM7000G%20breakout.html
+DIY cheap GPS motorbike/car tracker based on  ATMEGA 328P (arduino uno chip) and SIM7000E/SIM7000G/SIM7000A module from China (includes GPS and GNSS function). The total cost is below 40USD ( as in 2020 ) and positioning accuracy is ~1-20 meters ( tested in Europe location). The BK-7000 dev board can be bought here : http://www.and-global.com/index.php/product/SIM7000G%20breakout.html and here https://pl.aliexpress.com/item/32964568200.html
 
 The device when texted by mobile phone polls info from GPS module (if can fix to sattelites - tries several minutes to fix). Collected location information is send back as text message to your phone as Google Map link. 
 
