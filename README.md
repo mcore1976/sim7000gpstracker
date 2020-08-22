@@ -3,12 +3,7 @@ This is simple GPS vehicle tracker base on SIMCOM SIM7000E/G/A module.  Works fo
 
 DIY cheap GPS motorbike/car tracker based on  ATMEGA 328P (arduino uno chip) and SIM7000E/SIM7000G/SIM7000A module from China (includes GPS and GNSS function). The total cost is below 40USD ( as in 2020 ) and positioning accuracy is ~1-20 meters ( tested in Europe location). The BK-7000 dev board can be bought here : http://www.and-global.com/index.php/product/SIM7000G%20breakout.html and here https://pl.aliexpress.com/item/32964568200.html
 
-The device when texted by mobile phone polls info from GPS module (if can fix to sattelites - tries several minutes to fix). Collected location information is send back as text message to your phone as Google Map link. 
-
-There software uses set of commands to control behavior of the tracking device using text messages. One of modes (MULTI) sends 5 times GPS location in 4-5 minutes interval upon receiving particular message. There is also GUARD option to alert in case vehicle has been stolen and is on the move...
-
-The software can also be further customized to provide location in realtime to some HTTP POST /FTP server (see my other IoT project where I am doing it with SIM800L module which has same commands : https://www.youtube.com/watch?v=i4JgbwCktYQ  , the code is here https://github.com/mcore1976/smartmetering) - it is up to you to expand the code, it will take you probably few hours to implement this feature...
-But REMEMBER - Using GPRS/LTE to send HTTP / TCP IP requires good power source for SIM7000 board otherwise it will restart itself with "UNDERVOLTAGE WARNING"...
+The device when texted by mobile phone polls info from GPS of SIM7000 module (if can fix to sattelites - tries several minutes to fix). Collected location information is send back as text message to your phone as Google Map link. 
 
 This version provides SMS (mobile texting)  control of GPS tracker behavior. Command can be send in lower or upper letters. If command is correct it will be responded with appropriate text message confirmation. Following commands are available :
 
@@ -18,6 +13,8 @@ This version provides SMS (mobile texting)  control of GPS tracker behavior. Com
 
 - Command "GUARD" has been added to notify caller of GPS position change using text message (~300-500 meter sensivity is hardcoded but can be changed in the program).  "GUARD MODE" can be stopped by sending "STOP" message at least once (getting out of this mode is confirmed by text message) or ends up automatically after first detection of movement.
 
+The software can also be further customized to provide location in realtime to some HTTP POST /FTP server (see my other IoT project where I am doing it with SIM800L module which has same commands : https://www.youtube.com/watch?v=i4JgbwCktYQ  , the code is here https://github.com/mcore1976/smartmetering) - it is up to you to expand the code, it will take you probably few hours to implement this feature...
+But REMEMBER - Using GPRS/LTE to send HTTP / TCP IP requires good power source for SIM7000 board otherwise it will restart itself with "UNDERVOLTAGE WARNING"...
 
 ------------------------------------------------------------------------------------------------------------------------------
 
@@ -59,7 +56,7 @@ CONNECTIONS TO BE MADE :
 5) SIM7000 board VCC (BK-7000 pin V / PWRIN )  : to powerbank +5V VCC
 6) SIM7000 board PWRKEY (BK-7000 pin K - left unused - it is internally bound to GND, however when breaking this connection it can be used to switch on/off whole SIM7000 board)
 
-OPTIONAL) SIM7000 RI/RING if available (No such pin on BK-SIM7000 board) - to  ATMEGA328P INT0 pin #4,  and then you may experiment with ATMEGA POWERDOWN mode by uncommenting appropriate portion of the source code. I didn't have such board so I couldn't check this option.
+OPTIONAL) SIM7000 RI/RING if available (No such pin on BK-7000 board) - to  ATMEGA328P INT0 pin #4,  and then you may experiment with ATMEGA POWERDOWN mode by uncommenting appropriate portion of the source code. I didn't have such board so I couldn't check this option.
 
 7) Capacitor 1000uF between +5V and GND of powerbank  (optional, most of them already has some huge capacitors)
 
@@ -67,9 +64,9 @@ OPTIONAL) SIM7000 RI/RING if available (No such pin on BK-SIM7000 board) - to  A
 
 9) put 100nF capacitor between ATMEGA328P VCC pin #7 and ATMEGA328P GND pin #8 & PIN#22
 
-10) connect GPS passive antenna and GSM antenna to appropriate IPEX / U.FL connectors of BK-SIM7000 board. Probably it can work with active GPS antenna (but you would need to add another resistor for pullup antenna input to VCC - decribed here https://www.raviyp.com/embedded/205-SIM7000-gps-active-antenna-unable-to-acquire-fix-solution )
+10) connect GPS passive antenna and GSM antenna to appropriate IPEX / U.FL connectors of BK-SIM7000 board. Probably it can work with active GPS antenna (but you would need to add another resistor for pullup antenna input to VCC - decribed here https://www.raviyp.com/embedded/205-SIM808-gps-active-antenna-unable-to-acquire-fix-solution )
 
-11) Some SIM7000 boards I have used has TO SMALL electrolytic capacitor (mine had only 100uF). You have to solder/add another big capacitor (I have used 2200uF/10V, but it can be 1000uF/10V ) in parallel to make this board work correctly. Otherwise it will continously restart itself while trying to register to the 2G network.
+11) BK-7000 boards I have used had TO SMALL electrolytic capacitor (mine had only 470uF). Sometimes you have to solder/add another big capacitor (I have used 2200uF/10V, but it can be 1000uF/10V ) in parallel to make this board work correctly. Otherwise it may continously restart itself while trying to register to the 2G network.
 
 12) Connect crystal 8MHz between pins 9 & 10 of ATMEGA 328p and add blocking capacitors 22pF between crystal pins and GND line. If you want to use crystal pleas modify "compileatmegaX" file by putting appropriate l-fuse value to avrdude command.
 
@@ -82,7 +79,7 @@ You can find several boards with SIM7000 on the market. Some of them have full p
 
 Below there are two types of source files provided, first for BK-7000 board (with PIN DTR/SLEEP and RXD/TXD) and second file for any SIM7000 based board with only RXD,TXD pins. 
 
-------  for BK-7000 AND-GLOBAL board or other WITH DTR/SLEEP pin --------
+------  for BK-7000 AND-GLOBAL board or other SIM7000 board WITH DTR/SLEEP pin exposed --------
 
 "main7.c" (+ compilation script "compileatmega7" Linux/"compileatmega7.bat" Windows) -  source file for SIM7000 boards WITH DTR/SLEEP PIN exposed as BK-SIM7000 development board from AND-GLOBAL.  To use this file you will have to attach ATMEGA PC5 PIN #28 to SIM7000 board DTR/SLEEP pin. 
 
@@ -100,14 +97,13 @@ COMPILATION ON LINUX PC :
 
 Link to video how to program the chip : https://www.youtube.com/watch?v=7klgyNzZ2TI
 
-
 To upload program code to the chip using cheapest USBASP programmer (less than 2 USD on eBay/Aliexpress) 
 look at this page : http://www.learningaboutelectronics.com/Articles/Program-AVR-chip-using-a-USBASP-with-10-pin-cable.php
 
 The script attached in repository ( "compileatmegaX") can be used to upload data to the chip if you have Linux machine with following packages : "gcc-avr", "binutils-avr" (or sometimes just "binutils"), "avr-libc", "avrdude" and optionally "gdb-avr"(debugger only if you really need it) . 
 For example in Ubuntu download these packages using command : "sudo apt-get install gcc-avr binutils-avr avr-libc gdb-avr avrdude". 
 After doing it you will be able to run compilation the script from the directory you have downloaded github files by commands: 
-- "sudo chmod +rx compiletmega*" and "sudo ./compileatmega7"  ( for BK-808 board)
+- "sudo chmod +rx compiletmega*" and "sudo ./compileatmega7"  ( for BK-7000 board)
 - "sudo chmod +rx compiletmega*" and "sudo ./compileatmega8" ( for other SIM7000 boards )
 
 --------------------------------------------------------------------------------------------------------------------------
