@@ -20,12 +20,12 @@ But REMEMBER - Using GPRS/LTE to send HTTP / TCP IP requires good power source f
 
 BILL OF MATERIAL LIST (as for year 2019):
 
-1. SIM7000 based board BK-SIM7000 (25-30 USD on Aliexpress )
- - search for "www.and-global.com" boards BK-SIM7000 or equivalent...
+1. SIM7000 based board BK-7000 (25-30 USD on Aliexpress )
+ - search for "www.and-global.com" boards BK-7000 or equivalent...
       
 2. GPS (passive) antenna with IPEX / U.FL connector matching BK-SIM7000 board - 2 USD
 
-3. GSM antenna with IPEX / U.FL connector matching BK-SIM7000 board - 1 USD
+3. GSM antenna with IPEX / U.FL connector matching BK-7000 board / SIM7000 - 1 USD
 
 4. ATMEGA 328P (arduino uno) - 2 USD or ATMEGA328P based board : https://www.theengineeringprojects.com/2018/06/introduction-to-arduino-pro-mini.html  
 
@@ -60,11 +60,11 @@ OPTIONAL) SIM7000 RI/RING if available (No such pin on BK-7000 board) - to  ATME
 
 7) Capacitor 1000uF between +5V and GND of powerbank  (optional, most of them already has some huge capacitors)
 
-8) put 3x 1N40007 diodes IN SERIAL between 5V VCC and ATMEGA328P VCC PIN #7 (only for BK808 board and others that use 3.3V TTL logic) - ATMEGA must be powered from ~3.3V to adopt TTL logic levels of outputs TXD/RXD of BK-SIM7000 board
+8) put 3x 1N40007 diodes IN SERIAL between 5V VCC and ATMEGA328P VCC PIN #7 (only for BK808 board and others that use 3.3V TTL logic) - ATMEGA must be powered from ~3.3V to adopt TTL logic levels of outputs TXD/RXD of BK-7000 / SIM7000 board
 
 9) put 100nF capacitor between ATMEGA328P VCC pin #7 and ATMEGA328P GND pin #8 & PIN#22
 
-10) connect GPS passive antenna and GSM antenna to appropriate IPEX / U.FL connectors of BK-SIM7000 board. Probably it can work with active GPS antenna (but you would need to add another resistor for pullup antenna input to VCC - decribed here https://www.raviyp.com/embedded/205-SIM808-gps-active-antenna-unable-to-acquire-fix-solution )
+10) connect GPS passive antenna and GSM antenna to appropriate IPEX / U.FL connectors of BK-7000 / SIM7000 board. Probably it can work with active GPS antenna (but you would need to add another resistor for pullup antenna input to VCC - decribed here https://www.raviyp.com/embedded/205-SIM808-gps-active-antenna-unable-to-acquire-fix-solution )
 
 11) BK-7000 boards I have used had TO SMALL electrolytic capacitor (mine had only 470uF). Sometimes you have to solder/add another big capacitor (I have used 2200uF/10V, but it can be 1000uF/10V ) in parallel to make this board work correctly. Otherwise it may continously restart itself while trying to register to the 2G network.
 
@@ -81,7 +81,7 @@ Below there are two types of source files provided, first for BK-7000 board (wit
 
 ------  for BK-7000 AND-GLOBAL board or other SIM7000 board WITH DTR/SLEEP pin exposed --------
 
-"main7.c" (+ compilation script "compileatmega7" Linux/"compileatmega7.bat" Windows) -  source file for SIM7000 boards WITH DTR/SLEEP PIN exposed as BK-SIM7000 development board from AND-GLOBAL.  To use this file you will have to attach ATMEGA PC5 PIN #28 to SIM7000 board DTR/SLEEP pin. 
+"main7.c" (+ compilation script "compileatmega7" Linux/"compileatmega7.bat" Windows) -  source file for SIM7000 boards WITH DTR/SLEEP PIN exposed as BK-7000 / SIM7000 development board from AND-GLOBAL.  To use this file you will have to attach ATMEGA PC5 PIN #28 to SIM7000 board DTR/SLEEP pin. 
 
 
 ------- for other boards ( that do not have neither RING nor DTR pin exposed ) ------
@@ -136,7 +136,7 @@ The code without ARDUINO framework takes less memory so it can be uploaded even 
 OTHER INFO : 
 
 The solution has low power consumption because it is utilizing SLEEP MODE on SIM7000 module (only on BK-7000 board) and switches on GPS only when needed. 
-I have found that on the board BK-SIM7000 it is better to get rid of PWR LED (cut off)  because it is taking few mA of current thus unnecessary increasing power consumption - keep that in mind. Generally speaking SIM7000 board is not so  power efficient as SIM800L because contains GPS/GNSS block.
+I have found that on the board BK-7000 it is better to get rid of PWR LED (cut off)  because it is taking few mA of current thus unnecessary increasing power consumption - keep that in mind. Generally speaking SIM7000 board is not so  power efficient as SIM800L because contains GPS/GNSS block.
 
 The ATMEGA328P must be active all the time because my BK-7000 board does not have SIM7000 RING/RI pin exposed (which can be used to wake up ATMEGA via hardware interrupt). In this design DTR pin of SIM7000 module is used to sleepmode manipulation (when  coming out of sleepmode the DTR pin must be held LOW for at least 50msec). 
 Measured power consumption for whole gps tracker is 14mA when SIM7000 is in sleepmode with PWR LED on, but by getting PWR LED out the current lowers to 8mA.
