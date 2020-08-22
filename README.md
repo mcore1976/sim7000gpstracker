@@ -1,7 +1,7 @@
 # sim7000gpstracker
 This is simple GPS vehicle tracker base on SIMCOM SIM7000E/G/A module.  Works for GSM/LTE-M networks around the globe
 
-DIY cheap GPS motorbike/car tracker based on  ATMEGA 328P (arduino uno chip) and SIM7000E/SIM7000G/SIM7000A module from China (includes GPS and GNSS function). The total cost is below 40USD ( as in 2020 ) and positioning accuracy is ~1-20 meters ( tested in Europe location)
+DIY cheap GPS motorbike/car tracker based on  ATMEGA 328P (arduino uno chip) and SIM7000E/SIM7000G/SIM7000A module from China (includes GPS and GNSS function). The total cost is below 40USD ( as in 2020 ) and positioning accuracy is ~1-20 meters ( tested in Europe location). The BK-7000 dev board can be bought here : http://www.and-global.com/index.php/product/SIM7000G%20breakout.html
 
 The device when texted by mobile phone polls info from GPS module (if can fix to sattelites - tries several minutes to fix). Collected location information is send back as text message to your phone as Google Map link. 
 
@@ -52,12 +52,12 @@ BILL OF MATERIAL LIST (as for year 2019):
 
 CONNECTIONS TO BE MADE :
 
-1) SIM7000 board RXD (BK-SIM7000 pin R) to ATMEGA328 TXD PIN #3,
-2) SIM7000 board TXD (BK-SIM7000 pin T) to ATMEGA328 RXD PIN #2
-3) SIM7000 board DTR (BK-SIM7000 pin S : SLEEP PIN) to ATMEGA328 PC5 PIN #28
-4) SIM7000 board GND (BK-SIM7000 pin G ) : to powerbank GND 
-5) SIM7000 board VCC (BK-SIM7000 pin V / PWRIN )  : to powerbank +5V VCC
-6) SIM7000 board PWRKEY (BK-SIM7000 pin K - left unused - it is internally bound to GND, however when breaking this connection it can be used to switch on/off whole SIM7000 board)
+1) SIM7000 board RXD (BK-7000 pin R) to ATMEGA328 TXD PIN #3,
+2) SIM7000 board TXD (BK-7000 pin T) to ATMEGA328 RXD PIN #2
+3) SIM7000 board DTR (BK-7000 pin S : SLEEP PIN) to ATMEGA328 PC5 PIN #28
+4) SIM7000 board GND (BK-7000 pin G ) : to powerbank GND 
+5) SIM7000 board VCC (BK-7000 pin V / PWRIN )  : to powerbank +5V VCC
+6) SIM7000 board PWRKEY (BK-7000 pin K - left unused - it is internally bound to GND, however when breaking this connection it can be used to switch on/off whole SIM7000 board)
 
 OPTIONAL) SIM7000 RI/RING if available (No such pin on BK-SIM7000 board) - to  ATMEGA328P INT0 pin #4,  and then you may experiment with ATMEGA POWERDOWN mode by uncommenting appropriate portion of the source code. I didn't have such board so I couldn't check this option.
 
@@ -80,9 +80,9 @@ SOURCE FILE OPTIONS :
 
 You can find several boards with SIM7000 on the market. Some of them have full pinout like GND,RXD,TXD,DTR,RING - but others can have only serial port exposed : GND, RXD, TXD. Some boards are using 3.3V TTL logic on serial port, but others use 5V TTL logic.  You have to pay attention to all the details and consult the seller before buying development board.
 
-Below there are two types of source files provided, first for BK-808 board (with PIN DTR/SLEEP and RXD/TXD) and second file for any SIM7000 based board with only RXD,TXD pins. 
+Below there are two types of source files provided, first for BK-7000 board (with PIN DTR/SLEEP and RXD/TXD) and second file for any SIM7000 based board with only RXD,TXD pins. 
 
-------  for BK808 board or other WITH DTR/SLEEP pin --------
+------  for BK-7000 AND-GLOBAL board or other WITH DTR/SLEEP pin --------
 
 "main7.c" (+ compilation script "compileatmega7" Linux/"compileatmega7.bat" Windows) -  source file for SIM7000 boards WITH DTR/SLEEP PIN exposed as BK-SIM7000 development board from AND-GLOBAL.  To use this file you will have to attach ATMEGA PC5 PIN #28 to SIM7000 board DTR/SLEEP pin. 
 
@@ -139,10 +139,10 @@ The code without ARDUINO framework takes less memory so it can be uploaded even 
 
 OTHER INFO : 
 
-The solution has low power consumption because it is utilizing SLEEP MODE on SIM7000 module (only on BK-808 board) and switches on GPS only when needed. 
+The solution has low power consumption because it is utilizing SLEEP MODE on SIM7000 module (only on BK-7000 board) and switches on GPS only when needed. 
 I have found that on the board BK-SIM7000 it is better to get rid of PWR LED (cut off)  because it is taking few mA of current thus unnecessary increasing power consumption - keep that in mind. Generally speaking SIM7000 board is not so  power efficient as SIM800L because contains GPS/GNSS block.
 
-The ATMEGA328P must be active all the time because my BK-SIM7000 board does not have SIM7000 RING/RI pin exposed (which can be used to wake up ATMEGA via hardware interrupt). In this design DTR pin of SIM7000 module is used to sleepmode manipulation (when  coming out of sleepmode the DTR pin must be held LOW for at least 50msec). 
+The ATMEGA328P must be active all the time because my BK-7000 board does not have SIM7000 RING/RI pin exposed (which can be used to wake up ATMEGA via hardware interrupt). In this design DTR pin of SIM7000 module is used to sleepmode manipulation (when  coming out of sleepmode the DTR pin must be held LOW for at least 50msec). 
 Measured power consumption for whole gps tracker is 14mA when SIM7000 is in sleepmode with PWR LED on, but by getting PWR LED out the current lowers to 8mA.
 
 When SIM7000 module sends SMS/GPRS data it it may draw a lot of current ( up to 2A ) in short peaks so it is crucial to use good cables and thick copper lines for GND and VCC on PCB. This is the main issue people face when dealing with SIMCOM modules. The voltage may additionaly drop during this situation so that is why such big capacitor is in use. 
