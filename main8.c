@@ -13,7 +13,6 @@
  * connections to be made :
  * SIM7000 RXD to ATMEGA328 TXD PIN #3,
  * SIM7000 TXD to ATMEGA328 RXD PIN #2
- * SIM7000 DTR/SLEEP to ATMEGA PC5 PIN  #28 
  * VCC :
  * ATMEGA328 VCC (PIN #7) must be connected to lower voltage VCC ~3.3V than 5V of SIM7000 board
  * you may use 3x 1N4007 diodes in serial to drop voltage from 5V to ~3.3V
@@ -108,8 +107,8 @@ const char FLIGHTOFF[] PROGMEM = { "AT+CFUN=1\r" };
 
 // Sleepmode ON OFF - mode #1 requires DTR pin manipulation, 
 // to get out of SIM7000 sleepmode DTR must be LOW for at least 50 miliseconds
-const char SLEEPON[] PROGMEM = { "AT+CSCLK=1\r" };
-const char SLEEPOFF[] PROGMEM = { "AT+CSCLK=0\r" };
+//const char SLEEPON[] PROGMEM = { "AT+CSCLK=1\r" };
+//const char SLEEPOFF[] PROGMEM = { "AT+CSCLK=0\r" };
 
 // Fix UART speed to 9600 bps
 const char SET9600[] PROGMEM = { "AT+IPR=9600\r" };
