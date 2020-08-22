@@ -1,7 +1,7 @@
 # sim7000gpstracker
-This is simple GPS vehicle tracker base on SIMCOM SIM7000E/G/A module.  Works for GSM/LTE-M networks around the globe
+This is simple GPS vehicle tracker base on SIMCOM SIM7000E/G/A module.  Works for all GSM/LTE-M networks around the globe
 
-DIY cheap GPS motorbike/car tracker based on  ATMEGA 328P (arduino uno chip) and SIM7000E/SIM7000G/SIM7000A module from China (includes GPS and GNSS function). The total cost is below 40USD ( as in 2020 ) and positioning accuracy is ~1-20 meters ( tested in Europe location). The BK-7000 dev board can be bought here : http://www.and-global.com/index.php/product/SIM7000G%20breakout.html and here https://pl.aliexpress.com/item/32964568200.html
+DIY cheap GPS motorbike/car tracker based on  ATMEGA 328P (arduino uno chip)  using SIMCOM : SIM7000E/SIM7000G/SIM7000A module from China (includes GPS and GNSS function). The total cost is below 40USD ( as in 2020, BK-7000 module costs 25$ ) and positioning accuracy is ~1-20 meters ( tested in Europe location). The BK-7000 dev board can be bought here : http://www.and-global.com/index.php/product/SIM7000G%20breakout.html or here https://pl.aliexpress.com/item/32964568200.html
 
 The device when texted by mobile phone polls info from GPS of SIM7000 module (if can fix to sattelites - tries several minutes to fix). Collected location information is send back as text message to your phone as Google Map link. 
 
@@ -36,7 +36,7 @@ BILL OF MATERIAL LIST (as for year 2019):
 7. 3x 1N4007 (1 USD) - to convert 5V from powerbank to 3.3V for ATMEGA328P VCC ( only for BK-808 board and others that require TTL 3.3V logic)
 
 8. 1x 1000uF / 16V capacitor ( 0.5 USD) - connect to VCC & GND of SIM7000 board 
-   AND to existing 100uF (parallel) on the SIM7000 board - usage of this capacitor depends on type of SIM7000 board
+   AND to existing 470uF (parallel) on the SIM7000 board if SIM7000 board is having problems with attaching to the GSM/LTE network - usage of this capacitor depends on type of SIM7000 board
 
 9. 100nF (or some other in range 100nF-1uF) / 12V (or higher)  capacitor (0.2 USD) - connect to VCC & GND of ATMEGA328P ( if not using "Arduino Pro Mini" board)
 
