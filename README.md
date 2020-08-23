@@ -36,7 +36,7 @@ BILL OF MATERIAL LIST (as for year 2019):
 7. 3x 1N4007 (1 USD) - to convert 5V from powerbank to 3.3V for ATMEGA328P VCC ( only for BK-808 board and others that require TTL 3.3V logic)
 
 8. 1x 1000uF / 16V capacitor ( 0.5 USD) - connect to VCC & GND of SIM7000 board 
-   AND if needed to existing 470uF (parallel) on the SIM7000 board if SIM7000 board is having problems with attaching to the GSM/LTE network - usage of this capacitor depends on type of SIM7000 board
+   AND if needed to existing 470uF (parallel) on the SIM7000 board if it is having problems while attaching to the GSM/LTE network - usage of this capacitor depends on type of SIM7000 board
 
 9. 100nF (or some other in range 100nF-1uF) / 12V (or higher)  capacitor (0.2 USD) - connect to VCC & GND of ATMEGA328P ( if not using "Arduino Pro Mini" board)
 
