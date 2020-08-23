@@ -5,7 +5,7 @@ DIY cheap GPS motorbike/car tracker based on  ATMEGA 328P (arduino uno chip)  us
 
 The device when texted by mobile phone polls info from GPS of SIM7000 module (if can fix to sattelites - tries several minutes to fix). Collected location information is send back as text message to your phone as Google Map link. 
 
-This version provides SMS (mobile texting)  control of GPS tracker behavior. Command can be send in lower or upper letters. If command is correct it will be responded with appropriate text message confirmation. Following commands are available :
+The ATMEGA 328P AVR-GCC code provides SMS (mobile texting)  control of GPS tracker behavior. Command can be send in lower or upper letters. If command is correct it will be responded with appropriate text message confirmation. Following commands are available :
 
 - Command "MULTI"  gives CONTINOUS MODE of positioning and sends 5 times GPS location in 3-4 minutes interval. Simply send a text message MULTI to your simcard in GPS tracker to receive five GPS positions in 20 minutes sequence.
 
@@ -13,7 +13,7 @@ This version provides SMS (mobile texting)  control of GPS tracker behavior. Com
 
 - Command "GUARD" has been added to notify caller of GPS position change using text message (~300-500 meter sensivity is hardcoded but can be changed in the program).  "GUARD MODE" can be stopped by sending "STOP" message at least once (getting out of this mode is confirmed by text message) or ends up automatically after first detection of movement.
 
-The software can also be further customized to provide location in realtime to some HTTP POST /FTP server (see my other IoT project where I am doing it with SIM800L module which has same commands : https://www.youtube.com/watch?v=i4JgbwCktYQ  , the code is here https://github.com/mcore1976/smartmetering) - it is up to you to expand the code, it will take you probably few hours to implement this feature...
+The software can also be further customized to provide location in realtime to some HTTP POST /FTP server (see my other IoT project where I am doing it with SIM800L module which has the same commands : https://www.youtube.com/watch?v=i4JgbwCktYQ  , the code is here https://github.com/mcore1976/smartmetering) - it is up to you to expand the code, it will take you probably few hours to implement this feature...
 But REMEMBER - Using GPRS/LTE to send HTTP / TCP IP requires good power source for SIM7000 board otherwise it will restart itself with "UNDERVOLTAGE WARNING"...
 
 ------------------------------------------------------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ BILL OF MATERIAL LIST (as for year 2019):
 7. 3x 1N4007 (1 USD) - to convert 5V from powerbank to 3.3V for ATMEGA328P VCC ( only for BK-808 board and others that require TTL 3.3V logic)
 
 8. 1x 1000uF / 16V capacitor ( 0.5 USD) - connect to VCC & GND of SIM7000 board 
-   AND to existing 470uF (parallel) on the SIM7000 board if SIM7000 board is having problems with attaching to the GSM/LTE network - usage of this capacitor depends on type of SIM7000 board
+   AND if needed to existing 470uF (parallel) on the SIM7000 board if SIM7000 board is having problems with attaching to the GSM/LTE network - usage of this capacitor depends on type of SIM7000 board
 
 9. 100nF (or some other in range 100nF-1uF) / 12V (or higher)  capacitor (0.2 USD) - connect to VCC & GND of ATMEGA328P ( if not using "Arduino Pro Mini" board)
 
@@ -64,18 +64,18 @@ OPTIONAL) SIM7000 RI/RING if available (No such pin on BK-7000 board) - to  ATME
 
 9) put 100nF capacitor between ATMEGA328P VCC pin #7 and ATMEGA328P GND pin #8 & PIN#22
 
-10) connect GPS passive antenna and GSM antenna to appropriate IPEX / U.FL connectors of BK-7000 / SIM7000 board. Probably it can work with active GPS antenna (but you would need to add another resistor for pullup antenna input to VCC - decribed here https://www.raviyp.com/embedded/205-SIM808-gps-active-antenna-unable-to-acquire-fix-solution )
+10) connect GPS passive antenna and GSM antenna to appropriate IPEX / U.FL connectors of BK-7000 / SIM7000 board. Probably it can work with active GPS antenna (but you would need to add another resistor for pullup antenna input to VCC - this is decribed in SIM7000-Hardware-design guide PDF)
 
-11) BK-7000 boards I have used had TO SMALL electrolytic capacitor (mine had only 470uF). Sometimes you have to solder/add another big capacitor (I have used 2200uF/10V, but it can be 1000uF/10V ) in parallel to make this board work correctly. Otherwise it may continously restart itself while trying to register to the 2G network.
+11) BK-7000 board sametimes may have TO SMALL electrolytic capacitor (mine had only 470uF). If you have problems with GSM/LTE network registraion on your SIM7000 board then probably you have to solder/add another big capacitor (I have used 2200uF/10V, but it can be 1000uF/10V ) in parallel to make this board work correctly. Otherwise it may continously restart itself while trying to register to the 2G network.
 
-12) Connect crystal 8MHz between pins 9 & 10 of ATMEGA 328p and add blocking capacitors 22pF between crystal pins and GND line. If you want to use crystal pleas modify "compileatmegaX" file by putting appropriate l-fuse value to avrdude command.
+12) Connect crystal 8MHz between pins 9 & 10 of ATMEGA 328p and add blocking capacitors 22pF between crystal pins and GND line. If you want to use crystal pleas modify "compileatmegaX" file by putting appropriate l-fuse value to avrdude command (see content of "compileatmegaX" file)
 
 
 ----------------------------------------------------------------------------------------------------------------------------
 
 SOURCE FILE OPTIONS :
 
-You can find several boards with SIM7000 on the market. Some of them have full pinout like GND,RXD,TXD,DTR,RING - but others can have only serial port exposed : GND, RXD, TXD. Some boards are using 3.3V TTL logic on serial port, but others use 5V TTL logic.  You have to pay attention to all the details and consult the seller before buying development board.
+You can find several boards with SIM7000 on the market. Some of them have full pinout like GND,RXD,TXD,DTR,RING - but others may have only serial port exposed : GND, RXD, TXD. Some boards are using 3.3V TTL logic on serial port, but others use 5V TTL logic.  You have to pay attention to all the details and consult the seller before buying development board.
 
 Below there are two types of source files provided, first for BK-7000 board (with PIN DTR/SLEEP and RXD/TXD) and second file for any SIM7000 based board with only RXD,TXD pins. 
 
@@ -87,7 +87,7 @@ Below there are two types of source files provided, first for BK-7000 board (wit
 ------- for other boards ( that do not have neither RING nor DTR pin exposed ) ------
 
    Pay attention to type of TTL logic the board uses. They have to match on both sides - ATMEGA328P and SIM7000 board - otherwise you may kill the SIM7000 board. 
-If you want to use board that has 5V TTL logic DO NOT put 1N4007 Diodes to ATMEGA328P. If you want to use 3.3V TTL logic , you will probably need to connect 3.3V from ATMEGA VCC (after 3x 1N4007 Diode drop it from 5V) to VMCU PIN (if available) of SIM7000 board to switch it to 3.3V mode. You need to check all the details in SIM7000 board manual.
+If you want to use board that has 5V TTL logic DO NOT put 1N4007 Diodes to ATMEGA328P. If you want to use 3.3V TTL logic , you will probably need to connect 3.3V from ATMEGA VCC (after 3x 1N4007 Diode drop it from 5V) to VMCU PIN (if available) of SIM7000 board to switch it to 3.3V mode. You need to check all the details in SIM7000 board manual from your board vendor.
 
 "main8.c" (+ compilation script "compileatmega8" Linux / "compileatmega8.bat" Windows)  - source file for other SIM7000 boards without DTR and RING pin. To use this source file only RXD, TXD, GND lines have to be connected from SIM7000 board to ATMEGA 328P.
 
@@ -135,13 +135,13 @@ The code without ARDUINO framework takes less memory so it can be uploaded even 
 
 OTHER INFO : 
 
-The solution has low power consumption because it is utilizing SLEEP MODE on SIM7000 module (only on BK-7000 board) and switches on GPS only when needed. 
+
 I have found that on the board BK-7000 it is better to get rid of PWR LED (cut off)  because it is taking few mA of current thus unnecessary increasing power consumption - keep that in mind. Generally speaking SIM7000 board is not so  power efficient as SIM800L because contains GPS/GNSS block.
 
-The ATMEGA328P must be active all the time because my BK-7000 board does not have SIM7000 RING/RI pin exposed (which can be used to wake up ATMEGA via hardware interrupt). In this design DTR pin of SIM7000 module is used to sleepmode manipulation (when  coming out of sleepmode the DTR pin must be held LOW for at least 50msec). 
-Measured power consumption for whole gps tracker is 14mA when SIM7000 is in sleepmode with PWR LED on, but by getting PWR LED out the current lowers to 8mA.
+The solution has low power consumption because it is utilizing SLEEP MODE on SIM7000 module (only on BK-7000 board) and switches on GPS only when needed. 
+Meanwhile the microcontroller -  ATMEGA328P - must be active all the time because my BK-7000 board does not have SIM7000 RING/RI pin exposed (which can be used to wake up ATMEGA via hardware interrupt). In this design DTR pin of SIM7000 module is used to sleepmode manipulation (when  coming out of sleepmode the DTR pin must be held LOW for at least 50msec).  Measured power consumption for whole gps tracker is 14mA when SIM7000 is in sleepmode with PWR LED on, but by getting PWR LED out the current lowers to 8mA.
 
-When SIM7000 module sends SMS/GPRS data it it may draw a lot of current ( up to 2A ) in short peaks so it is crucial to use good cables and thick copper lines for GND and VCC on PCB. This is the main issue people face when dealing with SIMCOM modules. The voltage may additionaly drop during this situation so that is why such big capacitor is in use. 
+When SIM7000 module sends data over the air it may draw a lot of current ( up to 2A for GSM connectivity, up to 0.6A for LTE connectivity) in very short peaks so it is crucial to use good cables and thick copper lines for GND and VCC on PCB. This is the main issue people face when dealing with all SIMCOM modules. The voltage may additionaly drop during this situation so that is why such big capacitor is in use. 
 
-The tracker as designed will  be powered  from USB 5V Powerbank - it is good to use the cheapest USB powerbanks that do not have current sensor. Remember that GPS tracker will draw LOW current ( lower than 14mA). Some advanced powerbanks tend to switch off USB 5V when they find out that there is very little current consumed. If you have Powerbank with signalling LED then I suggest to get rid of this LED to reduce power drain on Powerbank.
+The tracker as designed will  be powered  from USB 5V / 2Amp Powerbank - it is good to use the cheapest USB powerbanks that do not have current sensor. Remember that GPS tracker during standby will draw LOW current ( lower than 14mA during 99% time of its work). Some advanced powerbanks tend to switch off USB 5V when they find out that there is very little current consumed. If you have Powerbank with signalling LED then I suggest to get rid of this LED to reduce power drain on Powerbank.
 By adding LM1804/LM317/LM7805 circuit or DC-DC buck converter (LM2596) you may adopt design to power from +12V car battery.
