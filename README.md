@@ -15,10 +15,8 @@ The ATMEGA 328P AVR-GCC code provides SMS (mobile texting)  control of GPS track
 
 - Command "GUARD" has been added to notify caller of GPS position change using text message (~300-500 meter sensivity is hardcoded but can be changed in the program).  "GUARD MODE" can be stopped by sending "STOP" message at least once (getting out of this mode is confirmed by text message) or ends up automatically after first detection of movement.
 
-The software can also be further customized to provide location in realtime to some HTTP POST /FTP server (see my other IoT project where I am doing it with SIM800L module which has the same commands : https://www.youtube.com/watch?v=i4JgbwCktYQ  , the code is here https://github.com/mcore1976/smartmetering) - it is up to you to expand the code, it will take you probably few hours to implement this feature...
-But REMEMBER - Using GPRS/LTE to send HTTP / TCP IP requires good power source for SIM7000 board otherwise it will restart itself with "UNDERVOLTAGE WARNING"...
+- Command "HTTP" ( only in experimental file "main10.c") - will post GPS position data every 2 minutes to your HTTP server ( you have to define it within the code before you compile it ) using HTTP GET command with parameters "longtitude", "latitude", "time" so you could watch/process data online on your WWW server. To get out of this mode send "STOP" command. But REMEMBER - Using GPRS/LTE to send HTTP / TCP IP requires good power source for SIM7000 board otherwise it will restart itself with "UNDERVOLTAGE WARNING"...
 
-If you need HTTP posting of GPS coordinates there is experimental source fle "main10.c" is able to send data to HTTP server in HTTP GET request (parameters : longtitude, latitude, time )  after texting GPS tracker with command "HTTP". You have to put URL to your HTTP server into the code and compile it.
 
 ------------------------------------------------------------------------------------------------------------------------------
 
