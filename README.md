@@ -17,6 +17,7 @@ The ATMEGA 328P AVR-GCC code provides SMS (mobile texting)  control of GPS track
 
 - Command "HTTP" ( only in experimental file "main10.c") - will post GPS position data every 2 minutes to your HTTP server ( you have to define it within the code before you compile it ) using HTTP GET command with parameters "longtitude", "latitude", "time" so you could watch/process data online on your WWW server. To get out of this mode send "STOP" command. But REMEMBER - Using GPRS/LTE to send HTTP / TCP IP requires good power source for SIM7000 board otherwise it will restart itself with "UNDERVOLTAGE WARNING"...
 
+- Command "ACC" (only in experimental file "main9.c" )  - checks the voltage of PC1 pin of ATMEGA, that must be connected over resistor divider to CAR 12V battery ( must use voltage divider resistors 10kOhm/47kOhm when aplying voltage) to provide information if Car battery needs to recharge or if there is anything wrong with it
 
 ------------------------------------------------------------------------------------------------------------------------------
 
